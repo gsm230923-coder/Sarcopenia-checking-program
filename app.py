@@ -75,6 +75,12 @@ if st.button("결과 보기"):
     st.session_state.lower = lower
     st.session_state.calculated = True
 
+# ---------------------------
+# 결과 출력 (항상 유지됨)
+# ---------------------------
+if st.session_state.calculated:
+    total = st.session_state.total
+
     st.subheader("📊 진단 결과")
     st.write(f"총 점수: **{total}점**")
 
@@ -82,22 +88,31 @@ if st.button("결과 보기"):
         st.error("근감소증 의심군입니다.")
     else:
         st.success("정상 범위입니다.")
-        
-    if st.session_state.calculated:
-        if st.button("운동 추천 받기"):
-            st.subheader("🏃 맞춤 운동 추천")
 
-            total = st.session_state.total
-            strength = st.session_state.strength
-            balance = st.session_state.balance
-            lower = st.session_state.lower
+# ---------------------------
+# 정상일 때 안내
+# ---------------------------
+if st.session_state.calculated and st.session_state.total < 4:
+    st.info("현재 상태가 양호하여 추가 운동 추천은 제공되지 않습니다 👍")
 
-            if total >= 4:
-                st.write("👉 1번, 2번, 7번 추천")
-            else:
-                if lower >= 3:
-                    st.write("👉 하체: 2번, 6번")
-                if balance >= 3:
-                    st.write("👉 균형: 7번, 8번")
-                if strength >= 2:
-                    st.write("👉 근력: 1번, 5번")
+# ---------------------------
+# 운동 추천 버튼 (밖으로 빼기🔥)
+# ---------------------------
+if st.session_state.calculated and st.session_state.total >= 4:
+    if st.button("운동 추천 받기"):
+        st.subheader("🏃 맞춤 운동 추천")
+
+        total = st.session_state.total
+        strength = st.session_state.strength
+        balance = st.session_state.balance
+        lower = st.session_state.lower
+
+        if total >= 4:
+            st.write("👉 1번, 2번, 7번 추천")
+        else:
+            if lower >= 3:
+                st.write("👉 하체: 2번, 6번")
+            if balance >= 3:
+                st.write("👉 균형: 7번, 8번")
+            if strength >= 2:
+                st.write("👉 근력: 1번, 5번")
