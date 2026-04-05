@@ -9,11 +9,11 @@ st.title("💪 근감소증 간이 진단 프로그램")
 # 입력
 # ---------------------------
 gender = st.radio("성별", ["남", "여"])
-grip = st.number_input("악력 (kg)", min_value=0.0, step=0.1, format="%.1f")
-time = st.number_input("6m 걷는 시간 (초)", min_value=1, step=1, value=5)
-chair = st.number_input("30초 의자 일어나기 횟수", min_value=0)
-stairs = st.number_input("30초 계단 오르기 개수", min_value=0)
-fall = st.number_input("1년 낙상 횟수", min_value=0)
+grip = st.text_input("악력 (kg)")
+time = st.text_input("6m 걷는 시간 (초)")
+chair = st.text_input("30초 의자 일어나기 횟수")
+stairs = st.text_input("30초 계단 오르기 개수")
+fall = st.text_input("1년 낙상 횟수")
 
 # ---------------------------
 # 점수 계산 함수
