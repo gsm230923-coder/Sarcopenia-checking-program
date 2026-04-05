@@ -10,7 +10,7 @@ st.title("💪 근감소증 간이 진단 프로그램")
 # ---------------------------
 gender = st.radio("성별", ["남", "여"])
 grip = st.number_input("악력 (kg)", min_value=0.0, step=0.1, format="%.1f")
-time = st.number_input("6m 걷는 시간 (초)", min_value=0.1, step=1)
+time = st.number_input("6m 걷는 시간 (초)", min_value=0.1, step=1, value=5)
 chair = st.number_input("30초 의자 일어나기 횟수", min_value=0)
 stairs = st.number_input("30초 계단 오르기 개수", min_value=0)
 fall = st.number_input("1년 낙상 횟수", min_value=0)
