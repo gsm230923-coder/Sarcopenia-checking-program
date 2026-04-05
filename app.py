@@ -85,19 +85,19 @@ if st.button("결과 보기"):
         
     if st.session_state.calculated:
         if st.button("운동 추천 받기"):
-        st.subheader("🏃 맞춤 운동 추천")
+            st.subheader("🏃 맞춤 운동 추천")
 
-        total = st.session_state.total
-        strength = st.session_state.strength
-        balance = st.session_state.balance
-        lower = st.session_state.lower
+            total = st.session_state.total
+            strength = st.session_state.strength
+            balance = st.session_state.balance
+            lower = st.session_state.lower
 
-        if total >= 4:
-            st.write("👉 1번, 2번, 7번 추천")
-        else:
-            if lower >= 3:
-                st.write("👉 하체: 2번, 6번")
-            if balance >= 3:
-                st.write("👉 균형: 7번, 8번")
-            if strength >= 2:
-                st.write("👉 근력: 1번, 5번")
+            if total >= 4:
+                st.write("👉 1번, 2번, 7번 추천")
+            else:
+                if lower >= 3:
+                    st.write("👉 하체: 2번, 6번")
+                if balance >= 3:
+                    st.write("👉 균형: 7번, 8번")
+                if strength >= 2:
+                    st.write("👉 근력: 1번, 5번")
