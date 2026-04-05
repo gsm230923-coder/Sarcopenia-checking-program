@@ -4,6 +4,8 @@ from PIL import Image
 st.set_page_config(page_title="근감소증 진단 프로그램", layout="centered")
 
 st.title("💪 근감소증 간이 진단 프로그램")
+if "calculated" not in st.session_state:
+    st.session_state.calculated = False
 
 # ---------------------------
 # 입력
@@ -18,7 +20,7 @@ fall = st.text_input("1년 낙상 횟수")
 # ---------------------------
 # 점수 계산 함수
 # ---------------------------
-def calculate():
+def calculate(grip, time, chair, stairs, fall):
     # 악력
     if gender == "남":
         grip_score = 0 if grip >= 28 else 1 if grip >= 24 else 2
@@ -53,7 +55,25 @@ def calculate():
 # 결과 보기
 # ---------------------------
 if st.button("결과 보기"):
-    total, strength, balance, lower = calculate()
+    try:
+        grip_val = float(grip)
+        time_val = int(time)
+        chair_val = int(chair)
+        stairs_val = int(stairs)
+        fall_val = int(fall)
+    except:
+        st.error("⚠ 숫자를 올바르게 입력해주세요!")
+        st.stop()
+
+    total, strength, balance, lower = calculate(
+        grip_val, time_val, chair_val, stairs_val, fall_val
+    )
+
+    st.session_state.total = total
+    st.session_state.strength = strength
+    st.session_state.balance = balance
+    st.session_state.lower = lower
+    st.session_state.calculated = True
 
     st.subheader("📊 진단 결과")
     st.write(f"총 점수: **{total}점**")
@@ -62,39 +82,22 @@ if st.button("결과 보기"):
         st.error("근감소증 의심군입니다.")
     else:
         st.success("정상 범위입니다.")
+        
+    if st.session_state.calculated:
+        if st.button("운동 추천 받기"):
+        st.subheader("🏃 맞춤 운동 추천")
 
-# ---------------------------
-# 운동 추천
-# ---------------------------
-if st.button("운동 추천 받기"):
-    total, strength, balance, lower = calculate()
+        total = st.session_state.total
+        strength = st.session_state.strength
+        balance = st.session_state.balance
+        lower = st.session_state.lower
 
-    st.subheader("🏃 맞춤 운동 추천")
-
-    def show_exercise(name, img_file, desc):
-        img = Image.open(f"images/{img_file}")
-        st.image(img, width=200)
-        st.markdown(f"**{name}**")
-        st.write(desc)
-        st.divider()
-
-    if total >= 4:
-        show_exercise("1번: 무릎-팔꿈치 터치", "1.png", "전신 근력 및 코어 강화")
-        show_exercise("2번: 한쪽 다리 들고 무릎 펴기", "2.png", "하체 근력 강화")
-        show_exercise("7번: 누워서 다리 올리기", "7.png", "코어 안정성 향상")
-
-    else:
-        if lower >= 3:
-            show_exercise("2번: 한쪽 다리 운동", "2.png", "하체 근력 강화")
-            show_exercise("6번: 하체 확장 운동", "6.png", "대퇴근 강화")
-
-        if balance >= 3:
-            show_exercise("7번: 다리 올리기", "7.png", "균형 및 코어 강화")
-            show_exercise("8번: 무릎 당기기", "8.png", "골반 안정성 향상")
-
-        if strength >= 2:
-            show_exercise("1번: 전신 운동", "1.png", "코어 및 전신 근력")
-            show_exercise("5번: 팔굽혀펴기", "5.png", "상체 근력 강화")
-
-        if total < 4 and lower < 3 and balance < 3 and strength < 2:
-            st.info("현재 상태가 양호합니다 👍")
+        if total >= 4:
+            st.write("👉 1번, 2번, 7번 추천")
+        else:
+            if lower >= 3:
+                st.write("👉 하체: 2번, 6번")
+            if balance >= 3:
+                st.write("👉 균형: 7번, 8번")
+            if strength >= 2:
+                st.write("👉 근력: 1번, 5번")
